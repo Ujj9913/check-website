@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    <%=title%>
+  </title>
+  <style>
+    body {
+      margin: 0;
+      padding-bottom: 3rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    #form {
+      background: rgba(0, 0, 0, 0.15);
+      padding: 0.25rem;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      height: 3rem;
+      box-sizing: border-box;
+      backdrop-filter: blur(10px);
+    }
+
+    #input {
+      border: none;
+      padding: 0 1rem;
+      flex-grow: 1;
+      border-radius: 2rem;
+      margin: 0.25rem;
+    }
+
+    #input:focus {
+      outline: none;
+    }
+
+    #form>button {
+
+      background: #333;
+      border: none;
+      padding: 0 1rem;
+      margin: 0.25rem;
+      border-radius: 3px;
+      outline: none;
+      color: #fff;
+    }
+
+    #messages {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    #messages>li {
+      padding: 0.5rem 1rem;
+    }
+
+    #messages>li:nth-child(odd) {
+      background: #fefede;
+    }
+  </style>
+</head>
+b
+<body>
+  <ul id="messages"></ul>
+  <form id="form" action="">
+    <input id="input" autocomplete="off" />
+    <button id="insert">insert</button>
+    <button onclick="deletemsg(input)" id="delete">delete</button>
+
+  </form>
+  <!-- <script defer src="http://localhost:3000/socket.io/socket.io.js"></script> -->
+  <script src="../client.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    var messages = document.getElementById('messages');
+    var form = document.getElementById('form');
+    var input = document.getElementById('input');
+    var insert = document.getElementById('insert');
+    var del = document.getElementById('delete');
+
+    del.addEventListener('click', function (e) {
+      e.preventDefault();
+      if (input.value) {
+
+        socket.emit('delete_chat', input.value);
+        input.value = '';
+      }
+    });
+    insert.addEventListener('click', function (e) {
+      e.preventDefault();
+      if (input.value) {
+
+        socket.emit('chat message', input.value);
+        input.value = '';
+      }
+    });
+
+
+
+    socket.on('message', data => {
+      console.log(data)
+      appendMessages(data)
+    })
+
+    socket.on('output-messages', data => {
+      console.log(data)
+      if (data.length) {
+        data.forEach(message => {
+          appendMessages(message.message)
+        });
+      }
+    })
+    socket.on('delete_chat', data => {
+      deletechat(data)
+      window.scrollTo(0, document.body.scrollHeight);
+    })
+
+    socket.on('chat message', function (msg) {
+      appendMessages(msg)
+      window.scrollTo(0, document.body.scrollHeight);
+    });
+    
+    function appendMessages(data) {
+      const html = `<li>${data}</li>`
+      messages.innerHTML += html
+
+    }
+
+  </script>
+</body>
+
+</html>

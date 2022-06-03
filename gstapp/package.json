@@ -1,0 +1,17 @@
+{
+  "name": "gstapp",
+  "version": "1.0.0",
+  "description": "this is use to uplaod and update the data in mysql using gst appliction",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ujjvalsofttech",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "ejs": "^3.1.8",
+    "express-mysql-session": "^2.1.8",
+    "express-session": "^1.17.3"
+  }
+}

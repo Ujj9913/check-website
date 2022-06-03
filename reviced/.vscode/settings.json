@@ -1,0 +1,6 @@
+{
+    "editor.gotoLocation.alternativeDefinitionCommand": "editor.action.goToReferences",
+    "editor.gotoLocation.alternativeDeclarationCommand": "editor.action.goToReferences",
+    "editor.gotoLocation.alternativeTypeDefinitionCommand": "editor.action.goToReferences",
+    "editor.semanticHighlighting.enabled": "configuredByTheme"
+}
